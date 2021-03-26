@@ -1,0 +1,9 @@
+service: selmachessappwebsocket
+
+provider:
+    name: aws
+    runtime: nodejs12.x
+    profile: napoleonCommits
+    region: us-east-1
+
+functions:
