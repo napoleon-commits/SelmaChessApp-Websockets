@@ -5,5 +5,44 @@ provider:
     runtime: nodejs12.x
     profile: napoleonCommits
     region: us-east-1
+    iamRoleStatements:
+        - Effect: Allow
+          Action:
+            - dynamodb:*
+          Resource: '*'
 
 functions:
+    websocket-connect:
+        handler: lambdas/websockets/connect.handler
+        events:
+            - websocket:
+                  route: $connect
+    websocket-disconnect:
+        handler: lambdas/websockets/disconnect.handler
+        events:
+            - websocket:
+                  route: $disconnect
+    websocket-default:
+        handler: lambdas/websockets/default.handler
+        events:
+            - websocket:
+                  route: $default
+    websocket-message:
+        handler: lambdas/websockets/message.handler
+        events:
+            - websocket:
+                  route: message
+
+resources:
+    Resources:
+        WebsocketUserTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: SelmaChessWebsocketUsers
+                AttributeDefinitions:
+                    - AttributeName: ID
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: ID
+                      KeyType: HASH
+                BillingMode: PAY_PER_REQUEST
