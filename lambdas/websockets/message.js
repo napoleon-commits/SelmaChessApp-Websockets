@@ -30,6 +30,11 @@ exports.handler = async (event) => {
                 });
             }
         }
+        else if(body.message === 'keepalive'){
+            /**
+             * used to maintain a connection after matching with an opponent
+             */
+        }
     }
     catch(error){
         return Responses._400({message: String(error)});
